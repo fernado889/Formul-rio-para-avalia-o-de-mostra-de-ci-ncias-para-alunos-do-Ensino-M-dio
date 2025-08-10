@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Avaliação da Mostra de Ciências</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      padding: 20px;
+      color: #333;
+    }
+
+    #areaPDF {
+      border: 3px solid #2a6f97;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(42, 111, 151, 0.4);
+      background-color: #ffffff;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2a6f97;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th {
+      background-color: #2a6f97;
+      color: white;
+      padding: 12px;
+      text-align: center;
+    }
+
+    td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:nth-child(even) {
+      background-color: #eaf4f4;
+    }
+
+    input[type='text'],
+    input[type='number'] {
+      width: 95%;
+      padding: 6px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    input.nome-aluno {
+      width: 180px;
+      text-align: left;
+    }
+
+    .icon {
+      color: #2a6f97;
+      margin-right: 8px;
+    }
+
+    .btn {
+      margin: 20px 10px 0 10px;
+      background-color: #2a6f97;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #1d4e70;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .coordenadores {
+      margin-top: 30px;
+      font-size: 16px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 8px;
+      min-height: 60px;
+    }
+
+    #mediaContainer {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+      color: #2a6f97;
+    }
+  </style>
+</head>
+<body>
+  <div id="areaPDF">
+    <h1>
+      <i class="fas fa-microscope icon"></i> Avaliação da Mostra de Ciências
+    </h1>
+
+    <form id="formAvaliacao">
+      <table id="tabela">
+        <thead>
+          <tr>
+            <th>Ano</th>
+            <th>Nome do Aluno</th>
+            <th>Setor</th>
+            <th>Grupo</th>
+            <th>Título do Projeto</th>
+            <th>Categoria</th>
+            <th>Nota (0 a 7)</th>
+            <th>Porcentagem</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="1º Ano - 101" /></td>
+            <td><input type="text" value="Ana Souza" class="nome-aluno" /></td>
+            <td><input type="text" value="Humanas" /></td>
+            <td><input type="text" value="Grupo 1" /></td>
+            <td><input type="text" value="Energia Sustentável" /></td>
+            <td><input type="text" value="Meio Ambiente" /></td>
+            <td>
+              <input
+                type="number"
+                value="0"
+                step="0.1"
+                min="0"
+                max="7"
+                oninput="atualizarPorcentagemEMedia()"
+              />
+            </td>
+            <td><input type="text" value="0%" readonly /></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+
+    <div id="mediaContainer">Média das Notas: 0.0 (0%)</div>
+
+    <div class="coordenadores" contenteditable="true">
+      <strong>Professores Coordenadores:</strong><br />
+    </div>
+  </div>
+
+  <div class="center">
+    <button type="button" class="btn" onclick="adicionarLinha()">➕ Adicionar Linha</button>
+    <button type="button" class="btn" onclick="limparLinhas()">🗑️ Limpar Linhas</button>
+    <button type="button" class="btn" onclick="baixarPDF()">📄 Baixar PDF</button>
+  </div>
+
+  <script>
+    const VALOR_MAXIMO = 7;
+
+    function adicionarLinha() {
+      const tabela = document.getElementById('tabela').getElementsByTagName('tbody')[0];
+      const novaLinha = tabela.insertRow();
+
+      const colunas = [
+        '<input type="text" value="1º Ano - 101">',
+        '<input type="text" class="nome-aluno">',
+        '<input type="text">',
+        '<input type="text">',
+        '<input type="text">',
+        '<input type="text">',
+        `<input
+          type="number"
+          value="0"
+          step="0.1"
+          min="0"
+          max="${VALOR_MAXIMO}"
+          oninput="atualizarPorcentagemEMedia()"
+        >`,
+        '<input type="text" value="0%" readonly />',
+      ];
+
+      for (let i = 0; i < colunas.length; i++) {
+        const celula = novaLinha.insertCell(i);
+        celula.innerHTML = colunas[i];
+      }
+    }
+
+    function limparLinhas() {
+      const tbody = document.getElementById('tabela').getElementsByTagName('tbody')[0];
+      tbody.innerHTML = '';
+      atualizarPorcentagemEMedia();
+    }
+
+    function atualizarPorcentagemEMedia() {
+      const tabela = document.getElementById('tabela');
+      const linhas = tabela.getElementsByTagName('tbody')[0].rows;
+
+      let somaNotas = 0;
+      let totalNotas = 0;
+
+      for (let i = 0; i < linhas.length; i++) {
+        const inputNota = linhas[i].cells[6].querySelector('input[type="number"]');
+        const inputPorcentagem = linhas[i].cells[7].querySelector('input[type="text"]');
+
+        let nota = parseFloat(inputNota.value);
+        if (isNaN(nota) || nota < 0) {
+          nota = 0;
+          inputNota.value = 0;
+        } else if (nota > VALOR_MAXIMO) {
+          nota = VALOR_MAXIMO;
+          inputNota.value = VALOR_MAXIMO;
+        }
+
+        const porcentagem = (nota / VALOR_MAXIMO) * 100;
+        inputPorcentagem.value = porcentagem.toFixed(1) + '%';
+
+        somaNotas += nota;
+        totalNotas++;
+      }
+
+      const media = totalNotas ? somaNotas / totalNotas : 0;
+      const mediaPorcentagem = (media / VALOR_MAXIMO) * 100;
+
+      const mediaContainer = document.getElementById('mediaContainer');
+      mediaContainer.textContent =
+        `Média das Notas: ${media.toFixed(2)} (${mediaPorcentagem.toFixed(1)}%)`;
+    }
+
+    function baixarPDF() {
+      const clone = document.getElementById('areaPDF').cloneNode(true);
+      const inputs = clone.querySelectorAll('input');
+      inputs.forEach((input) => {
+        const span = document.createElement('span');
+        span.textContent = input.value;
+        input.parentNode.replaceChild(span, input);
+      });
+
+      const opt = {
+        margin: 0.5,
+        filename: 'avaliacao-mostra-ciencias.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
+      };
+
+      html2pdf().from(clone).set(opt).save();
+    }
+
+    // Atualiza porcentagem e média logo ao carregar a página
+    window.onload = () => {
+      atualizarPorcentagemEMedia();
+    };
+  </script>
+</body>
+</html>
