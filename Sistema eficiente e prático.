@@ -1,0 +1,13 @@
+O sistema apresenta um layout organizado, com campos específicos para registrar o ano, nome do aluno, setor, grupo, título do projeto, categoria, nota (de 0 a 7) e porcentagem. À medida que as informações são inseridas, ele calcula automaticamente a porcentagem individual e a média geral das notas, garantindo rapidez e eliminando erros comuns de cálculos manuais.
+
+Há também um espaço dedicado para o registro dos professores coordenadores e um conjunto de botões que tornam o uso ainda mais prático:
+
+Adicionar Linha: insere novos registros de forma rápida.
+
+Limpar Linhas: remove todos os dados para reiniciar o preenchimento.
+
+Baixar PDF: gera instantaneamente um documento pronto para arquivamento ou compartilhamento.
+
+Com essa ferramenta, a avaliação se torna mais ágil, precisa e organizada, permitindo que os avaliadores foquem no que realmente importa: a análise dos projetos e o reconhecimento dos esforços dos alunos.
+
+Experimente esta ferramenta e descubra como avaliar projetos pode ser muito mais rápido, prático e eficiente!
